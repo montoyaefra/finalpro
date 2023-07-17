@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Listname;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ItemsController extends Controller
 {
@@ -34,6 +35,12 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
+         Validator::make($request->all(), [
+            "name" => ["required", "string"],
+            "nota" => ["required", "string"],
+            "categoria" => "required",
+        ]);  
+
         Item::create([
             "name"=> $request->name,
             "note"=>$request->nota,
