@@ -8,8 +8,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
-    @vite('resources/css/app.css')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.css"  rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+@vite('resources/css/app.css')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.css"  rel="stylesheet" />
    
 </head>
 <body>
@@ -25,7 +28,7 @@
                  </a>
               </li>
               <li>
-                 <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
+                 <a href="{{route("list.index")}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
                     <img class="w-7 " src="{{asset('images/rotate.svg')}}" alt="logo.svg">
                     {{-- <span class="flex-1 ml-3 whitespace-nowrap">Products</span> --}}
                  </a>
@@ -46,7 +49,7 @@
             <div class="flex flex-wrap grid grid-cols-4 gap-4">
                 @foreach ($category->items as $item)
                 <div class="bg-white border rounded w-40 flex justify-center items-center p-2 font-medium">
-                    {{$item->name}} <a href="##" class="ml-3 text-3xl text-gray-400 plus-btn" data-category="{{$category->name}}" data-item="{{$item->name}}">+</a>
+                    {{$item->name}} <button type="button" class="ml-3 text-3xl text-gray-400 plus-btn" data-category="{{$category->name}}" data-item="{{$item->name}}">+</button>
                 </div>
                 @endforeach
             </div>
@@ -60,22 +63,26 @@
             <div class="flex justify-center items-center bebida border rounded-full w-60 text-white font-medium grid grid-cols-2 p-1">
                 <img class="w-12  pt-4" src="{{asset('images/source.svg')}}" alt="logo.svg">
                 <span class="text-1xl">Didn't find what you need?</span>
-                <span class="ml-11 bg-white outline-white rounded text-black text-sm p-1 font-bold"><a href="##">Add item</a></span>
+                <span class="ml-11 bg-white outline-white rounded text-black text-sm p-1 font-bold">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Add item</button>
+                </span>
             </div>
+            <b>Shopping List</b>
             <form class="flex flex-col justify-between items-center">
                 <div id="added-items">
 
                 </div>
-                <div class="relative mb-6">
+                <div class="relative mb-1">
                     <div class="flex">
                         <input type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter a name">
-                        <button type="submit" class="btn border rounded-r-lg bg-blue-400 text-bold">Save</button>
+                        <button type="submit" name="nombre" class="btn border rounded-r-lg bg-blue-400 text-bold">Save</button>
                     </div>
                 </div>                
             </form>
    
         </div>
     </aside>
+
     
     <script>
         const plusBtns = document.querySelectorAll('.plus-btn');
@@ -110,7 +117,37 @@
     </script>
     
     
-    
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Agrega Nuevo Item</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="flex flex-col gap-3 justify-center items-center" action="">
+            @csrf
+            <input class="border rounded w-60" type="text" placeholder="Enter a name" name="name"> 
+            <textarea class="border rounded w-60 " type="text" placeholder="Enter a note" name="nota"></textarea>
+            <input class="border rounded w-60" type="text" placeholder="Enter a url" disabled>
+            <b class="text-sm">Categoria</b>
+            <select name="categoria">
+                <option value="" disabled selected>asignar categoria</option>
+                @foreach ($categories as $category)
+                <option value="{{ $category->name}}">{{ $category->name}}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="bg-blue-500 p-2 border rounded">Save changes</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="bg-red-500 p-2 border rounded" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     
     
     
