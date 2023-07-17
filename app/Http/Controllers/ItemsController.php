@@ -65,7 +65,7 @@ class ItemsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+       
     }
 
     /**
@@ -73,6 +73,13 @@ class ItemsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $item = Item::find($id);
+            
+        if ($item) {
+            $item= Item::destroy($id);
+            return back();
+        } else {
+            return back();
+        }
     }
 }
