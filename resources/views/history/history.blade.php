@@ -45,10 +45,11 @@
  </aside>
 
 
- <div class="p-5 lg:ml-32 flex flex-col gap-5">
-
+ <div class="p-5 lg:ml-32 flex flex-col gap-5 ">
+    <h3 class="text-4xl font-bold">Shopping History</h3>
+    <div class="grid grid-cols-2 gap-4 ">
     @foreach ($listnames as $listname)
-    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-60" type="button">{{$listname->name}} <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-60" type="button">{{$listname->name}} <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
       </svg></button>
     <!-- Dropdown menu -->
@@ -56,12 +57,13 @@
         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
             @foreach ($listname->items as $item)
           <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{$item->name}}</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-blue">{{$item->name}}</a>
           </li>
           @endforeach
         </ul>  
     </div>
     @endforeach
+    </div>
  </div>
 
 
@@ -82,13 +84,45 @@
         <form class="flex flex-col justify-between items-center">
             <div class="relative mb-1">
                 <div class="flex">
-                    <input type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter a name">
-                    <button type="submit" name="nombre" class="btn border rounded-r-lg bg-blue-400 text-bold">Save</button>
+                    <input type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter a name" disabled>
+                    <button type="submit" name="nombre" class="btn border rounded-r-lg bg-blue-400 text-bold" disabled>Save</button>
                 </div>
             </div>                
         </form>
 
     </div>
 </aside>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Agrega Nuevo Item</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="flex flex-col gap-3 justify-center items-center" action="">
+              @csrf
+              <input class="border rounded w-60" type="text" placeholder="Enter a name" name="name"> 
+              <textarea class="border rounded w-60 " type="text" placeholder="Enter a note" name="nota"></textarea>
+              <input class="border rounded w-60" type="text" placeholder="Enter a url" disabled>
+              <b class="text-sm">Categoria</b>
+              <select name="categoria">
+                  <option value="" disabled selected>asignar categoria</option>
+                  @foreach ($categories as $category)
+                  <option value="{{ $category->name}}">{{ $category->name}}</option>
+                  @endforeach
+              </select>
+              <button type="submit" class="bg-blue-500 p-2 border rounded">Save changes</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="bg-red-500 p-2 border rounded" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </body>
 </html>
