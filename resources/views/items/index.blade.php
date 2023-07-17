@@ -39,41 +39,76 @@
      
      <div class="p-5 lg:ml-32">
         <h3 class="text-4xl"><span class="text-yellow-400 font-bold">Shopping</span> allows you take your <br> shopping list wherever you go</h3>
-
-    @foreach ($categories as $category)    
+    
+        @foreach ($categories as $category)
         <div class="mt-20 mr-20 pr-20">
             <h4 class="text-3xl mb-5">{{$category->name}}</h4>
             <div class="flex flex-wrap grid grid-cols-4 gap-4">
-            @foreach ($category->items as $item)   
+                @foreach ($category->items as $item)
                 <div class="bg-white border rounded w-40 flex justify-center items-center p-2 font-medium">
-                    {{$item->name}} <a href="##" class="ml-3 text-3xl text-gray-400">+</a>
+                    {{$item->name}} <a href="##" class="ml-3 text-3xl text-gray-400 plus-btn" data-category="{{$category->name}}" data-item="{{$item->name}}">+</a>
                 </div>
-            @endforeach    
+                @endforeach
             </div>
         </div>
-    @endforeach     
-
-        </div>
-     </div>
-
-     <aside id="default-sidebar" class="fixed top-0 right-0 z-40 w-60 h-screen transition-transform translate-x-0 sm:translate-x-full" aria-label="Sidebar">
+        @endforeach
+    
+    </div>
+    
+    <aside id="default-sidebar" class="fixed top-0 right-0 z-40 w-60 h-screen transition-transform translate-x-0 sm:translate-x-full" aria-label="Sidebar">
         <div class="h-full px-3 py-4 overflow-y-auto sidebar2 flex flex-col justify-between items-center">
             <div class="flex justify-center items-center bebida border rounded-full w-60 text-white font-medium grid grid-cols-2 p-1">
                 <img class="w-12  pt-4" src="{{asset('images/source.svg')}}" alt="logo.svg">
                 <span class="text-1xl">Didn't find what you need?</span>
                 <span class="ml-11 bg-white outline-white rounded text-black text-sm p-1 font-bold"><a href="##">Add item</a></span>
             </div>
-            <div>
-                chatgpt aqui quiero que esten los elementos a los cuales yo doy click
+            <div id="added-items">
+                <!-- Aquí se agregarán los elementos cuando se haga clic en los símbolos "+" -->
             </div>
-
+    
             <div class="relative mb-6">
-                <input type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com">
-              </div>
-
-
+                <input type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com">
+            </div>
+    
+    
         </div>
     </aside>
+    
+    <script>
+        const plusBtns = document.querySelectorAll('.plus-btn');
+        const addedItemsContainer = document.getElementById('added-items');
+        const addedItemsMap = new Map(); // Usamos un Map para agrupar los elementos por categoría
+    
+        plusBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const itemName = btn.dataset.item;
+                const categoryName = btn.dataset.category;
+                
+                // Verificamos si la categoría ya existe en el Map
+                if (addedItemsMap.has(categoryName)) {
+                    // Si existe, obtenemos los elementos correspondientes y los concatenamos
+                    const existingItems = addedItemsMap.get(categoryName);
+                    addedItemsMap.set(categoryName, `${existingItems}<br>${itemName}`);
+                } else {
+                    // Si no existe, agregamos la categoría y su primer elemento al Map
+                    addedItemsMap.set(categoryName, itemName);
+                }
+    
+                // Limpiamos el contenido anterior del aside
+                addedItemsContainer.innerHTML = '';
+    
+                // Recorremos el Map para mostrar los elementos organizados por categoría en el aside
+                addedItemsMap.forEach((items, category) => {
+                    const addedItem = document.createElement('div');
+                    addedItem.innerHTML = `${category} <br> ${items}`;
+                    addedItemsContainer.appendChild(addedItem);
+                });
+            });
+        });
+    </script>
+    
+    
          
      
  
