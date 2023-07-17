@@ -19,7 +19,7 @@
             <div class="flex flex-col justify-center items-center"><img class="w-11  pt-4" src="{{asset('images/logo.svg')}}" alt="logo.svg"></div>
            <ul class="space-y-2 font-medium">
               <li>
-                 <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
+                 <a href="{{route("items.index")}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
                     <img src="{{asset('images/bars.svg')}}" alt="items">
                     {{-- <span class="flex-1 ml-3 whitespace-nowrap">Users</span> --}}
                  </a>
@@ -62,51 +62,56 @@
                 <span class="text-1xl">Didn't find what you need?</span>
                 <span class="ml-11 bg-white outline-white rounded text-black text-sm p-1 font-bold"><a href="##">Add item</a></span>
             </div>
-            <div id="added-items">
-                <!-- Aquí se agregarán los elementos cuando se haga clic en los símbolos "+" -->
-            </div>
-    
-            <div class="relative mb-6">
-                <input type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com">
-            </div>
-    
-    
+            <form class="flex flex-col justify-between items-center">
+                <div id="added-items">
+
+                </div>
+                <div class="relative mb-6">
+                    <div class="flex">
+                        <input type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter a name">
+                        <button type="submit" class="btn border rounded-r-lg bg-blue-400 text-bold">Save</button>
+                    </div>
+                </div>                
+            </form>
+   
         </div>
     </aside>
     
     <script>
         const plusBtns = document.querySelectorAll('.plus-btn');
         const addedItemsContainer = document.getElementById('added-items');
-        const addedItemsMap = new Map(); // Usamos un Map para agrupar los elementos por categoría
+        const addedItemsMap = new Map();
     
         plusBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const itemName = btn.dataset.item;
                 const categoryName = btn.dataset.category;
-                
-                // Verificamos si la categoría ya existe en el Map
+    
                 if (addedItemsMap.has(categoryName)) {
-                    // Si existe, obtenemos los elementos correspondientes y los concatenamos
                     const existingItems = addedItemsMap.get(categoryName);
-                    addedItemsMap.set(categoryName, `${existingItems}<br>${itemName}`);
+    
+                    // Verificamos si el item ya existe en la lista
+                    if (!existingItems.includes(itemName)) {
+                        existingItems.push(itemName);
+                    }
                 } else {
-                    // Si no existe, agregamos la categoría y su primer elemento al Map
-                    addedItemsMap.set(categoryName, itemName);
+                    addedItemsMap.set(categoryName, [itemName]);
                 }
     
-                // Limpiamos el contenido anterior del aside
-                addedItemsContainer.innerHTML = '';
-    
-                // Recorremos el Map para mostrar los elementos organizados por categoría en el aside
-                addedItemsMap.forEach((items, category) => {
-                    const addedItem = document.createElement('div');
-                    addedItem.innerHTML = `${category} <br> ${items}`;
-                    addedItemsContainer.appendChild(addedItem);
-                });
+                addedItemsContainer.innerHTML = Array.from(addedItemsMap, ([category, items]) =>
+                `<div class="m-2">
+                    <h6 class="text-gray-500 text-sm">${category}</h6><span>${items.join('<br>')}</span>
+                    ${items.map(item => `<input type="text" name="items" value="${item}" disabled style="display: none;">`).join('')}
+                </div>`
+                ).join('');
             });
         });
     </script>
+    
+    
+    
+    
     
     
          
