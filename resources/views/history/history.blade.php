@@ -74,12 +74,9 @@
 
  <aside id="default-sidebar" class="fixed top-0 right-0 z-40 w-60 h-screen transition-transform translate-x-0 sm:translate-x-full" aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto sidebar2 flex flex-col justify-between items-center">
-        <div class="flex justify-center items-center bebida border rounded-full w-60 text-white font-medium grid grid-cols-2 p-1">
+        <div class="flex justify-center items-center bebida border rounded-full w-60 text-white font-medium grid grid-cols-3">
             <img class="w-12  pt-4" src="{{asset('images/source.svg')}}" alt="logo.svg">
             <span class="text-1xl">Didn't find what you need?</span>
-            <span class="ml-11 bg-white outline-white rounded text-black text-sm p-1 font-bold">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Add item</button>
-            </span>
         </div>
         <div>
             <img src="{{asset('images/shopping.svg')}}" alt="shopp.svg">
@@ -97,35 +94,6 @@
 </aside>
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Agrega Nuevo Item</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form class="flex flex-col gap-3 justify-center items-center" action="">
-              @csrf
-              <input class="border rounded w-60" type="text" placeholder="Enter a name" name="name"> 
-              <textarea class="border rounded w-60 " type="text" placeholder="Enter a note" name="nota"></textarea>
-              <input class="border rounded w-60" type="text" placeholder="Enter a url" disabled>
-              <b class="text-sm">Categoria</b>
-              <select name="categoria">
-                  <option value="" disabled selected>asignar categoria</option>
-                  @foreach ($categories as $category)
-                  <option value="{{ $category->name}}">{{ $category->name}}</option>
-                  @endforeach
-              </select>
-              <button type="submit" class="bg-blue-500 p-2 border rounded">Save changes</button>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="bg-red-500 p-2 border rounded" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
   
 </body>
 </html>

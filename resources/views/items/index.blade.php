@@ -137,7 +137,7 @@
                 addedItemsContainer.innerHTML = Array.from(addedItemsMap, ([category, items]) =>
                 `<div class="m-2">
                     <h6 class="text-gray-500 text-sm">${category}</h6><span>${items.join('<br>')}</span>
-                    ${items.map(item => `<input type="text" name="${item}" value="${item}" disabled style="display: none;">`).join('')}
+                    ${items.map(item => `<input type="text" name="${$item}" value="${item}" disabled style="display: none;">`).join('')}
                 </div>`
                 ).join('');
             });

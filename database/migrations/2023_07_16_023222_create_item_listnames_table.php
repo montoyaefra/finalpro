@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("item_id")->constrained("items")->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId("listname_id")->constrained("listnames")->cascadeOnUpdate()->restrictOnDelete();
-            $table->unsignedInteger("pieces");
+            $table->unsignedInteger("pieces")->nullable();
         });
     }
 
