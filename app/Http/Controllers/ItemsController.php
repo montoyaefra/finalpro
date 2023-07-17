@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Item;
 use App\Models\Listname;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,14 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Item::create([
+            "name"=> $request->name,
+            "note"=>$request->nota,
+            "category_id" => $request->categoria
+
+          
+        ]);
+        return back();
     }
 
     /**

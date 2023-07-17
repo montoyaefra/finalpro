@@ -10,5 +10,12 @@ class Item extends Model
     use HasFactory;
 
     public $timestamps=false;
+
+    protected $fillable = ['name', 'note', 'category_id'];
+   
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
 

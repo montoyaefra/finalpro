@@ -64,7 +64,7 @@
                 <img class="w-12  pt-4" src="{{asset('images/source.svg')}}" alt="logo.svg">
                 <span class="text-1xl">Didn't find what you need?</span>
                 <span class="ml-11 bg-white outline-white rounded text-black text-sm p-1 font-bold">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Add item</button>
+                    <a href="{{route("items.create")}}" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Add item</a>
                 </span>
             </div>
             <b>Shopping List</b>
@@ -74,8 +74,8 @@
                 </div>
                 <div class="relative mb-1">
                     <div class="flex">
-                        <input type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter a name">
-                        <button type="submit" name="nombre" class="btn border rounded-r-lg bg-blue-400 text-bold">Save</button>
+                        <input name="nombre" type="text" id="input-group-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter a name">
+                        <button type="submit"  class="btn border rounded-r-lg bg-blue-400 text-bold">Save</button>
                     </div>
                 </div>                
             </form>
@@ -109,7 +109,7 @@
                 addedItemsContainer.innerHTML = Array.from(addedItemsMap, ([category, items]) =>
                 `<div class="m-2">
                     <h6 class="text-gray-500 text-sm">${category}</h6><span>${items.join('<br>')}</span>
-                    ${items.map(item => `<input type="text" name="items" value="${item}" disabled style="display: none;">`).join('')}
+                    ${items.map(item => `<input type="text" name="${item}" value="${item}" disabled style="display: none;">`).join('')}
                 </div>`
                 ).join('');
             });
@@ -126,16 +126,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form class="flex flex-col gap-3 justify-center items-center" action="">
+        <form class="flex flex-col gap-3 justify-center items-center" method="POST" action="{{route("items.store")}}">
             @csrf
             <input class="border rounded w-60" type="text" placeholder="Enter a name" name="name"> 
             <textarea class="border rounded w-60 " type="text" placeholder="Enter a note" name="nota"></textarea>
             <input class="border rounded w-60" type="text" placeholder="Enter a url" disabled>
             <b class="text-sm">Categoria</b>
-            <select name="categoria">
+            <select name="categoria"> 
                 <option value="" disabled selected>asignar categoria</option>
                 @foreach ($categories as $category)
-                <option value="{{ $category->name}}">{{ $category->name}}</option>
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
             <button type="submit" class="bg-blue-500 p-2 border rounded">Save changes</button>
