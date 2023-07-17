@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
 @vite('resources/css/app.css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.css"  rel="stylesheet" />
-   
+@livewireStyles
 </head>
 <body>
 
@@ -24,13 +24,11 @@
               <li>
                  <a href="{{route("items.index")}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
                     <img src="{{asset('images/bars.svg')}}" alt="items">
-                    {{-- <span class="flex-1 ml-3 whitespace-nowrap">Users</span> --}}
                  </a>
               </li>
               <li>
                  <a href="{{route("list.index")}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
                     <img class="w-7 " src="{{asset('images/rotate.svg')}}" alt="logo.svg">
-                    {{-- <span class="flex-1 ml-3 whitespace-nowrap">Products</span> --}}
                  </a>
               </li>
            </ul>
@@ -41,48 +39,7 @@
      </aside>
      
      <div class="p-5 lg:ml-32">
-        <h3 class="text-4xl"><span class="text-yellow-400 font-bold">Shopping</span> allows you take your <br> shopping list wherever you go</h3>
-    
-        @foreach ($categories as $category)
-        <div class="mt-20 mr-20 pr-20">
-            <h4 class="text-3xl mb-5">{{$category->name}}</h4>
-            <div class="flex flex-wrap grid grid-cols-4 gap-4">
-                @foreach ($category->items as $item)
-                <div class="bg-white border rounded w-40 flex justify-center items-center p-2 font-medium">
-                    <a href="##" data-bs-toggle="modal" data-bs-target="#example{{$item->id}}" class="font-medium">{{$item->name}}</a> 
-                    <button type="button" class="ml-3 text-3xl text-gray-400 plus-btn hover:bg-red-100" data-category="{{$category->name}}" data-item="{{$item->name}}">+</button>
-                </div>
-
-                <div class="modal fade" id="example{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body flex flex-col justify-center items-center">
-                           <p class="text-3xl font-bold m-4">{{$item->name}}</p>
-                           <p class="font-bold ">{{$category->name}}</p>
-                           <p class="font-medium m-4">{{$item->note}}</p>     
-                          <div class="flex">
-                            <form action="{{route("items.destroy", $item->id)}}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-600 p-2 border rounded">Delete</button>
-                              </form> 
-                                <button type="button" class="bg-blue-500 p-2 border rounded plus-btn" data-bs-dismiss="modal" data-category="{{$category->name}}" data-item="{{$item->name}}">Add to list</button>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="bg-red-500 p-2 border rounded" data-bs-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                @endforeach
-            </div>
-        </div>
-        @endforeach
+        @livewire('show-items')
     
     </div>
     
@@ -92,7 +49,7 @@
                 <img class="w-12  pt-4" src="{{asset('images/source.svg')}}" alt="logo.svg">
                 <span class="text-1xl">Didn't find what you need?</span>
                 <span class="ml-11 bg-white outline-white rounded text-black text-sm p-1 font-bold">
-                    <a href="{{route("items.create")}}" data-bs-toggle="modal" data-bs-target="#exampleModal">Add item</a>
+                    <a href="{{route("items.create")}}" data-bs-toggle="modal" data-bs-target="#exampleModal" >Add item</a>
                 </span>
             </div>
             <b>Shopping List</b>
@@ -111,39 +68,43 @@
         </div>
     </aside>
 
-    
-    <script>
-        const plusBtns = document.querySelectorAll('.plus-btn');
-        const addedItemsContainer = document.getElementById('added-items');
-        const addedItemsMap = new Map();
-    
-        plusBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const itemName = btn.dataset.item;
-                const categoryName = btn.dataset.category;
-    
-                if (addedItemsMap.has(categoryName)) {
-                    const existingItems = addedItemsMap.get(categoryName);
-    
-                    // Verificamos si el item ya existe en la lista
-                    if (!existingItems.includes(itemName)) {
-                        existingItems.push(itemName);
-                    }
-                } else {
-                    addedItemsMap.set(categoryName, [itemName]);
-                }
-    
-                addedItemsContainer.innerHTML = Array.from(addedItemsMap, ([category, items]) =>
-                `<div class="m-2">
-                    <h6 class="text-gray-500 text-sm">${category}</h6><span>${items.join('<br>')}</span>
-                    ${items.map(item => `<input type="text" name="${$item}" value="${item}" disabled style="display: none;">`).join('')}
-                </div>`
-                ).join('');
-            });
-        });
-    </script>
-    
+   
+    <div wire:ignore>
+        <script>
+          // Mueve tu código JavaScript aquí
+          const plusBtns = document.querySelectorAll('.plus-btn');
+          const addedItemsContainer = document.getElementById('added-items');
+          const addedItemsMap = new Map();
+      
+          plusBtns.forEach(btn => {
+              btn.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  const itemName = btn.dataset.item;
+                  const categoryName = btn.dataset.category;
+      
+                  if (addedItemsMap.has(categoryName)) {
+                      const existingItems = addedItemsMap.get(categoryName);
+      
+                      // Verificamos si el item ya existe en la lista
+                      if (!existingItems.includes(itemName)) {
+                          existingItems.push(itemName);
+                      }
+                  } else {
+                      addedItemsMap.set(categoryName, [itemName]);
+                  }
+      
+                  addedItemsContainer.innerHTML = Array.from(addedItemsMap, ([category, items]) =>
+                  `<div class="m-2">
+                      <h6 class="text-gray-500 text-sm">${category}</h6><span>${items.join('<br>')}</span>
+                      ${items.map(item => `<input type="text" name="" value="${item}" disabled style="display: none;">`).join('')}
+                  </div>`
+                  ).join('');
+              });
+          });
+        </script>
+      </div>
+        
+      
     
     <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -154,10 +115,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form class="flex flex-col gap-3 justify-center items-center" method="POST" action="{{route("items.store")}}">
+        <form class="flex flex-col gap-2 justify-center items-center" method="POST" action="{{route("items.store")}}">
             @csrf
-            <input class="border rounded w-60" type="text" placeholder="Enter a name" name="name"> 
+            <b class="text-sm">nombre del item</b>
+            <input class="border rounded w-60" type="text" placeholder="Enter a name" name="name">
+            <b class="text-sm">nota</b> 
             <textarea class="border rounded w-60 " type="text" placeholder="Enter a note" name="nota"></textarea>
+            <b class="text-sm">Imagen</b>
             <input class="border rounded w-60" type="text" placeholder="Enter a url" disabled>
             <b class="text-sm">Categoria</b>
             <select name="categoria"> 
@@ -177,11 +141,6 @@
 </div>
 
     
-    
-    
-         
-     
- 
- 
+@livewireScripts
 </body>
 </html>

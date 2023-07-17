@@ -15,10 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::resource("/items", ItemsController::class)->names("items");
 
 Route::resource("/history", HistoryController::class)->names("list");
+
+Route::get('/', [ItemsController::class, 'index']);

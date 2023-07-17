@@ -16,10 +16,11 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        $listnames = Listname::all();
+        // $listnames = Listname::all();
         $categories = Category::all();
-        return view("items/index", compact("listnames", "categories"));
-        // return $listnames[0]->items;
+        
+        return view("items/index", compact("categories"));
+        
     }
 
     /**

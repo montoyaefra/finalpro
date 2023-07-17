@@ -27,14 +27,12 @@
        <ul class="space-y-2 font-medium">
           <li>
              <a href="{{route("items.index")}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
-                <img src="{{asset('images/bars.svg')}}" alt="items">
-                {{-- <span class="flex-1 ml-3 whitespace-nowrap">Users</span> --}}
+                <img src="{{asset('images/bars.svg')}}" alt="items"> 
              </a>
           </li>
           <li>
              <a href="{{route("list.index")}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
                 <img class="w-7 " src="{{asset('images/rotate.svg')}}" alt="logo.svg">
-                {{-- <span class="flex-1 ml-3 whitespace-nowrap">Products</span> --}}
              </a>
           </li>
        </ul>
@@ -60,7 +58,7 @@
         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
             @foreach ($listname->items as $item)
           <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-blue">{{$item->name}}</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-blue flex justify-between">{{$item->name}} <span>pieces-{{$item->pieces}}</span></a>
           </li>
           @endforeach
         </ul>  

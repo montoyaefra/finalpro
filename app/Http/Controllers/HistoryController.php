@@ -14,7 +14,10 @@ class HistoryController extends Controller
      */
     public function index()
     {
-        $listnames = Listname::all();
+        $listnames = Listname::with(['items' => function ($query) {
+            $query->select('items.*', 'item_listnames.pieces as pieces');
+        }])->get();
+        
         $categories = Category::all();
         return view("history/history", compact("listnames", "categories"));
     }
